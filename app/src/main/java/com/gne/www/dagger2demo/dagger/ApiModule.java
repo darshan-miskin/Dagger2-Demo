@@ -20,6 +20,7 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -52,26 +53,25 @@ class ApiModule {
 
     @Provides
     OkHttpClient provideOkHttpClient(){
-       OkHttpClient okHttpClient= new OkHttpClient();
-       okHttpClient.newBuilder().callTimeout(10*1000, TimeUnit.MILLISECONDS)
+       return new OkHttpClient.Builder()
+                .callTimeout(10*1000, TimeUnit.MILLISECONDS)
                 .addInterceptor(new Interceptor() {
                     @NotNull
                     @Override
                     public Response intercept(@NotNull Chain chain) throws IOException {
                         Request request=chain.request();
-                        request.newBuilder().addHeader("headerName","headerValue");//add common headers
+                        request.newBuilder().addHeader("headerName","headerValue").build();//add common headers
 
                         Response response=chain.proceed(request);
 
-                        Gson gson1=provideGson();
-                        String resp=gson1.toJson(response);
+                        String resp=response.body().string();
                         if(BuildConfig.DEBUG){
                             Log.d(ApiModule.class.getSimpleName(), "intercept: "+resp);//check or log response
                         }
 
-                        return response;
+                        return response.newBuilder()
+                                .body(ResponseBody.create(resp, response.body().contentType())).build();
                     }
-                });
-       return okHttpClient;
+                }).build();
     }
 }

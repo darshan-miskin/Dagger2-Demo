@@ -8,7 +8,5 @@ import dagger.Component;
 @Component(modules = ApiInterfaceModule.class)
 public interface RetrofitComponent {
 
-    ApiInterface getApiInterface();
-
     void inject(MainActivity mainActivity);
 }
