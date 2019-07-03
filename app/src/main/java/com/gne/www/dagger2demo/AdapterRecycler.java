@@ -15,8 +15,6 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
-import javax.inject.Inject;
-
 public class AdapterRecycler extends RecyclerView.Adapter<AdapterRecycler.RecyclerHolder> {
 
     ArrayList<ResponseData> responseDataArrayList = new ArrayList<>();

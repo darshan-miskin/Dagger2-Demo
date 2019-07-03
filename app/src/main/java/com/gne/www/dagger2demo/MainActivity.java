@@ -24,16 +24,17 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
-    @Inject Call<ArrayList<ResponseData>> call;
+    @Inject
+    Call<ArrayList<ResponseData>> call;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        recyclerView=findViewById(R.id.recyclerview);
+        recyclerView = findViewById(R.id.recyclerview);
 
-        RetrofitComponent retrofitComponent= DaggerRetrofitComponent.create();
+        RetrofitComponent retrofitComponent = DaggerRetrofitComponent.create();
         retrofitComponent.inject(MainActivity.this);
     }
 
@@ -43,17 +44,16 @@ public class MainActivity extends AppCompatActivity {
         getData();
     }
 
-    void getData(){
+    void getData() {
 
         call.enqueue(new Callback<ArrayList<ResponseData>>() {
             @Override
             public void onResponse(Call<ArrayList<ResponseData>> call, Response<ArrayList<ResponseData>> response) {
-                ArrayList<ResponseData> responseDataArrayList=response.body();
-                if(responseDataArrayList!=null){
+                ArrayList<ResponseData> responseDataArrayList = response.body();
+                if (responseDataArrayList != null) {
                     recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                    recyclerView.setAdapter(new AdapterRecycler(responseDataArrayList,MainActivity.this));
-                }
-                else {
+                    recyclerView.setAdapter(new AdapterRecycler(responseDataArrayList, MainActivity.this));
+                } else {
                     showErrorMessage();
                 }
             }
@@ -65,9 +65,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    void showErrorMessage(){
+    void showErrorMessage() {
 
-        Snackbar.make(findViewById(android.R.id.content),"Something went wrong :(",Snackbar.LENGTH_INDEFINITE)
+        Snackbar.make(findViewById(android.R.id.content), "Something went wrong :(", Snackbar.LENGTH_INDEFINITE)
                 .setAction("Retry", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        if(call!=null)
+        if (call != null)
             call.cancel();
     }
 }

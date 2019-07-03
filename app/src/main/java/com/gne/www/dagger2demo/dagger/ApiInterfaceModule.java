@@ -12,7 +12,7 @@ import retrofit2.Call;
 @Module(includes = ApiModule.class)
 class ApiInterfaceModule {
     @Provides
-    Call<ArrayList<ResponseData>> provideCallResponseData(ApiInterface apiInterface){
+    Call<ArrayList<ResponseData>> provideCallResponseData(ApiInterface apiInterface) {
         return apiInterface.getData();
     }
 }

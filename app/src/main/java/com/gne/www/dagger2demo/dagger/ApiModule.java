@@ -34,8 +34,8 @@ class ApiModule {
     }
 
     @Provides
-    Retrofit provideRetrofit(OkHttpClient okHttpClient, Gson gson){
-        String url="https://raw.githubusercontent.com/";
+    Retrofit provideRetrofit(OkHttpClient okHttpClient, Gson gson) {
+        String url = "https://raw.githubusercontent.com/";
         return new Retrofit.Builder()
                 .baseUrl(url)
                 .client(okHttpClient)
@@ -45,28 +45,28 @@ class ApiModule {
     }
 
     @Provides
-    Gson provideGson(){
+    Gson provideGson() {
         return new GsonBuilder()
                 .setLenient()
                 .create();
     }
 
     @Provides
-    OkHttpClient provideOkHttpClient(){
-       return new OkHttpClient.Builder()
-                .callTimeout(10*1000, TimeUnit.MILLISECONDS)
+    OkHttpClient provideOkHttpClient() {
+        return new OkHttpClient.Builder()
+                .callTimeout(10 * 1000, TimeUnit.MILLISECONDS)
                 .addInterceptor(new Interceptor() {
                     @NotNull
                     @Override
                     public Response intercept(@NotNull Chain chain) throws IOException {
-                        Request request=chain.request();
-                        request.newBuilder().addHeader("headerName","headerValue").build();//add common headers
+                        Request request = chain.request();
+                        request.newBuilder().addHeader("headerName", "headerValue").build();//add common headers
 
-                        Response response=chain.proceed(request);
+                        Response response = chain.proceed(request);
 
-                        String resp=response.body().string();
-                        if(BuildConfig.DEBUG){
-                            Log.d(ApiModule.class.getSimpleName(), "intercept: "+resp);//check or log response
+                        String resp = response.body().string();
+                        if (BuildConfig.DEBUG) {
+                            Log.d(ApiModule.class.getSimpleName(), "intercept: " + resp);//check or log response
                         }
 
                         return response.newBuilder()
