@@ -11,6 +11,6 @@ import retrofit2.http.GET;
 
 public interface ApiInterface {
 
-    @GET("/darshan-miskin/storage/master/db.json")
+    @GET("/darshan-miskin/storage/master/mydb.json")
     Call<ArrayList<ResponseData>> getData();
 }
